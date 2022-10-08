@@ -1,0 +1,266 @@
+
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Oyester-Assignment"
+    },
+   
+    "host": "localhost:4000",
+    "basePath": "/api/v1",
+    "paths" : {
+        
+        "/register" : {
+            "post" : {
+                "summary" : "create a user",
+                "description": "save the authentication token in cookie",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "register object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successfully User has been created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/registerResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User already exists",
+                        "schema": {
+                            "$ref": "#/definitions/failedRegisterResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/login" : {
+            "post" : {
+                "summary" : "login",
+                "description": "save the authentication token in cookie",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "register object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "successfully logged in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/loginResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        
+                        "description": "Invalid credential",
+                        "schema": {
+                            "$ref": "#/definitions/failedLoginResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout" : {
+            "get" : {
+                "summary" : "logout",
+                "description": "remove the authentication token from cookie",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/logoutResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    "definitions": {
+        "user": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "registerResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                     "type": "boolean"
+                },
+                "user": {
+                    "type": "object",
+                    "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                    }
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "loginResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                     "type": "boolean"
+                },
+                "user": {
+                    "type": "object",
+                    "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                    }
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "logoutResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                     "type": "boolean"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Logged out"
+                }
+            }
+        },
+        "failedRegisterResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "message": {
+                    "type": "string",
+                    "example": "User already exists"
+                }
+            }
+
+        },
+        "failedLoginResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "message": {
+                    "type": "string",
+                    "example": "User does not exist or Incorrect password"
+                }
+            }
+
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+
+        }
+    }
+}
